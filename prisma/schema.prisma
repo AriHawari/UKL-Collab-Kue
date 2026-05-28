@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider      = "prisma-client"
+  output        = "../generated/prisma"
+  compilerBuild = "fast"
+  moduleFormat  = "cjs"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  role         UserRole
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+}
+
+model Menu {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  description        String?
+  price              Int
+  stock              Int                 @default(0)
+  imageUrl           String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  transactionDetails TransactionDetail[]
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+model Transaction {
+  id         Int                 @id @default(autoincrement())
+  userId     Int
+  user       User                @relation(fields: [userId], references: [id])
+  totalPrice Int                 @default(0)
+  createdAt  DateTime            @default(now())
+  details    TransactionDetail[]
+}
+
+model TransactionDetail {
+  id            Int         @id @default(autoincrement())
+  transactionId Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  menuId        Int
+  menu          Menu        @relation(fields: [menuId], references: [id])
+  quantity      Int
+  subTotal      Int
+}
