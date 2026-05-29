@@ -5,6 +5,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // <-- Import 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+
+  app.enableCors({
+    origin: '*', // Mengizinkan semua domain frontend mengakses API ini
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   // --- KONFIGURASI SWAGGER ---
   const config = new DocumentBuilder()
     .setTitle('Restoran UKL API')
@@ -28,5 +35,7 @@ async function bootstrap() {
   // ---------------------------
 
   await app.listen(3000);
+  console.log(`Application is running on: http://localhost:3000`);
+  console.log(`Swagger documentation available at: http://localhost:3000/api`);
 }
 bootstrap();
