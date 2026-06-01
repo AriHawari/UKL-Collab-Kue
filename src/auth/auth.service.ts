@@ -30,7 +30,7 @@ export class AuthService {
         name: dto.name,
         email: dto.email,
         password: hashedPassword,
-        role: dto.role, // Diperbaiki dari 'dot.role' menjadi 'dto.role'
+        role: dto.role,
       },
     });
 
