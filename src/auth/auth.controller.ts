@@ -20,7 +20,7 @@ export class AuthController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Mengambil data profil user yang sedang dipakai saat ini' })
+  @ApiOperation({})
   async getMe(@Req() req: any) {
     const userId = req.user.id; 
     return this.authService.getMe(userId);
