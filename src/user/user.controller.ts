@@ -50,7 +50,7 @@ export class UserController {
     return this.userService.update(+id, updateUserDto);
   }
 
-  @Patch("name")
+  @Patch("name/:name")
   @Roles(UserRole.ADMIN)
   updateByName(
     @Param('name') name: string,

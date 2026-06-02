@@ -76,10 +76,24 @@ export class UserService {
   async updateByName(name: string, dto: UpdateUserDto) {
     const user = await this.findByName(name);
 
-    return this.prisma.user.update({
+    const updateData = { ...dto};
+
+    if (updateData.password) {
+      const salt = await bcrypt.genSalt();
+      updateData.password = await bcrypt.hash(updateData.password, salt);
+    }
+
+    const updatedUser = await this.prisma.user.update({
       where: { id: user.id },
-      data:dto
-    })
+      data: updateData,
+    });
+
+    
+    const { password, ...result } = updatedUser;
+    return {
+      message: `User dengan nama '${name}' berhasil diperbarui`,
+      user: result,
+    };
   }
 
   async remove(id: number) {
