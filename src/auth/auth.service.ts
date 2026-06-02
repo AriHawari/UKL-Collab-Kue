@@ -39,7 +39,7 @@ export class AuthService {
       message: 'Registrasi user baru berhasil',
       user: result,
     };
-  } // <-- Tanda penutup fungsi register yang benar ada di sini!
+  }
 
   // LOGIN 
   async login(dto: LoginDto) {
@@ -68,4 +68,21 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async getMe(userId: number) {
+  const user = await this.prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new BadRequestException('User tidak ditemukan');
+  }
+
+  // Buang password sebelum dikembalikan ke client/Postman
+  const { password, ...result } = user;
+  return {
+    message: 'Berhasil mengambil profil diri sendiri',
+    user: result,
+  };
+}
 }
