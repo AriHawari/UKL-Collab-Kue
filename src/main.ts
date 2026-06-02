@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // <-- Import ini
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,13 +26,12 @@ async function bootstrap() {
         description: 'Masukkan token JWT login kamu di sini',
         in: 'header',
       },
-      'JWT-auth', // Nama pengunci keamanan khusus untuk Swagger
+      'JWT-auth',
     )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // Menentukan jalur web menjadi: localhost:3000/api
-  // ---------------------------
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
   console.log(`Application is running on: http://localhost:3000`);
